@@ -25,3 +25,16 @@
 
 (defn born [cell board]
   (b/Board (put-in (board :matrix) [(cell :x) (cell :y)] 1)))
+
+(defn next-status [cell board]
+  (let [original-status (get-in board [:matrix (cell :x) (cell :y)])
+        living-count (around-living-count cell board)]
+    (case original-status
+      0 (cond
+          (= living-count 3) 1
+          original-status)
+      1 (cond
+          (< living-count 2) 0
+          (> living-count 3) 0
+          original-status))))
+
