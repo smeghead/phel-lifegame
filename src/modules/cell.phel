@@ -1,0 +1,27 @@
+(ns lifegame\modules\cell
+  (:require lifegame\modules\board :as b))
+
+(defstruct Cell [x y])
+
+(defn- get-around-cells [cell board]
+  (let [matrix (board :matrix)
+        x (cell :x)
+        y (cell :y)]
+    [(get-in matrix [(dec x) (dec y)])
+     (get-in matrix [(dec x) y])
+     (get-in matrix [(dec x) (inc y)])
+     (get-in matrix [x (dec y)])
+     (get-in matrix [x (inc y)])
+     (get-in matrix [(inc x) (dec y)])
+     (get-in matrix [(inc x) y])
+     (get-in matrix [(inc x) (inc y)])]))
+
+(defn around-living-count [cell board]
+  (let [matrix (board :matrix)
+        width (count (get matrix 0))
+        height (count matrix)
+        around-cells (get-around-cells cell board)]
+    (count (filter |(= $ 1) around-cells))))
+
+(defn born [cell board]
+  (b/Board (put-in (board :matrix) [(cell :x) (cell :y)] 1)))

@@ -1,6 +1,7 @@
 (ns lifegame\modules\board-test
-  (:require lifegame\modules\board)
+  (:require lifegame\modules\board :as b)
   (:require phel\test :refer [deftest is]))
 
-(deftest test-adder
-  (is (= 6 (board/adder 1 2 3))))
+(deftest test-board-initial
+  (let [board (b/create 2 3)]
+    (is (= [[0 0 0] [0 0 0]] (board :matrix)))))

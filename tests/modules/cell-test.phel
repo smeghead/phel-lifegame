@@ -1,0 +1,21 @@
+(ns lifegame\modules\cell-test
+  (:require lifegame\modules\board :as b)
+  (:require lifegame\modules\cell :as c)
+  (:require phel\test :refer [deftest is]))
+
+(deftest test-cell-initial
+  (let [board (b/create 2 3)
+        cell (c/Cell 0 0)]
+    (is (= 0 (c/around-living-count cell board)))))
+
+(deftest test-cell-born
+  (let [board (b/create 2 3)
+        cell (c/Cell 0 0)
+        board (c/born cell board)]
+    (is (= 1 (get-in board [:matrix 0 0])))))
+
+(deftest test-cell-around-living-count
+  (let [board (b/create 2 3)
+        board (c/born (c/Cell 0 0) board)
+        board (c/born (c/Cell 1 0) board)]
+    (is (= 2 (c/around-living-count (c/Cell 1 1) board)))))
