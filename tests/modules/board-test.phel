@@ -1,0 +1,6 @@
+(ns lifegame\modules\board-test
+  (:require lifegame\modules\board)
+  (:require phel\test :refer [deftest is]))
+
+(deftest test-adder
+  (is (= 6 (board/adder 1 2 3))))

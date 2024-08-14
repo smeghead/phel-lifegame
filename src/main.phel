@@ -1,0 +1,5 @@
+(ns cli-skeleton\main
+  (:require cli-skeleton\modules\adder-module :refer [adder]))
+
+(when-not *build-mode*
+  (println (adder 1 2 3)))
