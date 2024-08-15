@@ -4,19 +4,24 @@
   (:require lifegame\modules\cell :as c)
   (:require lifegame\modules\tick :as t))
 
+(def *height* 20)
+(def *width* 40)
 
-(defn draw-board [board]
+(defn draw-board [board last-board tick-count]
   (let [matrix (board :matrix)
-        a-width (count (matrix 0))
-        a-height (count matrix)]
-    (dofor [x :range [a-height]
-            y :range [a-width]]
-      (gui/render y x (case (get-in matrix [x y])
-                        1 "#"
-                        0 " ")))))
+        last-matrix (if last-board (last-board :matrix) [])
+        width (count (matrix 0))
+        height (count matrix)]
+    (dofor [x :range [height]
+            y :range [width]]
+      (when-not (= (get-in matrix [x y]) (get-in last-matrix [x y]))
+        (gui/render y x (case (get-in matrix [x y])
+                          1 "#"
+                          0 " "))))
+    (gui/render 1 (+ *height* 2) (format "tick: %d" tick-count))))
 
 (defn random-board []
-  (let [board (b/create 20 30)
+  (let [board (b/create *height* *width*)
         board (c/born (c/Cell 0 0) board)
         board (c/born (c/Cell 0 1) board)
         board (c/born (c/Cell 0 2) board)
@@ -24,9 +29,12 @@
         board (c/born (c/Cell 1 0) board)]
     board))
 
-(gui/clear-screen)
 
-(loop [board (random-board)]
-  (php/usleep 10000)
-  (draw-board board)
-  (recur (t/tick board)))
+(when-not *build-mode*
+  (gui/clear-screen)
+  (loop [board (random-board)
+         last-board nil
+         tick-count 1]
+    (php/usleep 50000)
+    (draw-board board last-board tick-count)
+    (recur (t/tick board) board (inc tick-count))))
