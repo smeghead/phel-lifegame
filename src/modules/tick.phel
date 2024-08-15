@@ -1,0 +1,28 @@
+(ns lifegame\modules\tick
+  (:require lifegame\modules\board :as b)
+  (:require lifegame\modules\cell :as c))
+
+(defn get-cells [width height]
+  (for [x :range [height]
+        y :range [width]]
+    (c/Cell x y)))
+
+(defn next-board [board f]
+  (let [matrix (board :matrix)
+        width (count (get matrix 0))
+        height (count matrix)
+        new-matrix (loop [cells (get-cells width height)
+                          cells-results (map |(f $ board) cells)
+                          new-matrix (b/create-matrix width height)]
+                     (if (empty? cells)
+                       new-matrix
+                       (let [cell (first cells)
+                             v (first cells-results)]
+                         (recur
+                           (rest cells)
+                           (rest cells-results)
+                           (put-in new-matrix [(cell :x) (cell :y)] v)))))]
+     (b/Board new-matrix)))
+
+(defn tick [board]
+  (next-board board c/next-status))
