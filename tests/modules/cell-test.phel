@@ -4,24 +4,24 @@
   (:require phel\test :refer [deftest is]))
 
 (deftest test-cell-initial
-  (let [board (b/create 2 3)
+  (let [board (b/create 2 3 0)
         cell (c/Cell 0 0)]
     (is (= 0 (c/around-living-count cell board)))))
 
 (deftest test-cell-born
-  (let [board (b/create 2 3)
+  (let [board (b/create 2 3 0)
         cell (c/Cell 0 0)
         board (c/born cell board)]
     (is (= 1 (get-in board [:matrix 0 0])))))
 
 (deftest test-cell-around-living-count
-  (let [board (b/create 2 3)
+  (let [board (b/create 2 3 0)
         board (c/born (c/Cell 0 0) board)
         board (c/born (c/Cell 1 0) board)]
     (is (= 2 (c/around-living-count (c/Cell 1 1) board)))))
 
 (deftest test-cell-around-living-count-full
-  (let [board (b/create 3 3)
+  (let [board (b/create 3 3 0)
         board (c/born (c/Cell 0 0) board)
         board (c/born (c/Cell 0 1) board)
         board (c/born (c/Cell 0 2) board)
@@ -33,7 +33,7 @@
     (is (= 8 (c/around-living-count (c/Cell 1 1) board)))))
 
 (deftest test-cell-next-status-dead-8
-  (let [board (b/create 3 3)
+  (let [board (b/create 3 3 0)
         board (c/born (c/Cell 0 0) board)
         board (c/born (c/Cell 0 1) board)
         board (c/born (c/Cell 0 2) board)
@@ -46,7 +46,7 @@
     (is (= 0 (c/next-status (c/Cell 1 1) board)))))
 
 (deftest test-cell-next-status-dead-7
-  (let [board (b/create 3 3)
+  (let [board (b/create 3 3 0)
         board (c/born (c/Cell 0 0) board)
         board (c/born (c/Cell 0 1) board)
         board (c/born (c/Cell 0 2) board)
@@ -58,7 +58,7 @@
     (is (= 0 (c/next-status (c/Cell 1 1) board)))))
 
 (deftest test-cell-next-status-dead-6
-  (let [board (b/create 3 3)
+  (let [board (b/create 3 3 0)
         board (c/born (c/Cell 0 0) board)
         board (c/born (c/Cell 0 1) board)
         board (c/born (c/Cell 0 2) board)
@@ -69,7 +69,7 @@
     (is (= 0 (c/next-status (c/Cell 1 1) board)))))
 
 (deftest test-cell-next-status-dead-5
-  (let [board (b/create 3 3)
+  (let [board (b/create 3 3 0)
         board (c/born (c/Cell 0 0) board)
         board (c/born (c/Cell 0 1) board)
         board (c/born (c/Cell 0 2) board)
@@ -79,7 +79,7 @@
     (is (= 0 (c/next-status (c/Cell 1 1) board)))))
 
 (deftest test-cell-next-status-dead-4
-  (let [board (b/create 3 3)
+  (let [board (b/create 3 3 0)
         board (c/born (c/Cell 0 0) board)
         board (c/born (c/Cell 0 1) board)
         board (c/born (c/Cell 0 2) board)
@@ -88,14 +88,14 @@
     (is (= 0 (c/next-status (c/Cell 1 1) board)))))
 
 (deftest test-cell-next-status-born-3
-  (let [board (b/create 3 3)
+  (let [board (b/create 3 3 0)
         board (c/born (c/Cell 0 0) board)
         board (c/born (c/Cell 0 1) board)
         board (c/born (c/Cell 0 2) board)]
     (is (= 1 (c/next-status (c/Cell 1 1) board)))))
 
 (deftest test-cell-next-status-live-3
-  (let [board (b/create 3 3)
+  (let [board (b/create 3 3 0)
         board (c/born (c/Cell 0 0) board)
         board (c/born (c/Cell 0 1) board)
         board (c/born (c/Cell 0 2) board)
@@ -103,19 +103,19 @@
     (is (= 1 (c/next-status (c/Cell 1 1) board)))))
 
 (deftest test-cell-next-status-live-2
-  (let [board (b/create 3 3)
+  (let [board (b/create 3 3 0)
         board (c/born (c/Cell 0 0) board)
         board (c/born (c/Cell 0 1) board)
         board (c/born (c/Cell 1 1) board)]
     (is (= 1 (c/next-status (c/Cell 1 1) board)))))
 
 (deftest test-cell-next-status-depopulation-2
-  (let [board (b/create 3 3)
+  (let [board (b/create 3 3 0)
         board (c/born (c/Cell 0 0) board)
         board (c/born (c/Cell 1 1) board)]
     (is (= 0 (c/next-status (c/Cell 1 1) board)))))
 
 (deftest test-cell-next-status-depopulation-1
-  (let [board (b/create 3 3)
+  (let [board (b/create 3 3 0)
         board (c/born (c/Cell 1 1) board)]
     (is (= 0 (c/next-status (c/Cell 1 1) board)))))

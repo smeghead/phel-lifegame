@@ -3,5 +3,7 @@
   (:require phel\test :refer [deftest is]))
 
 (deftest test-board-initial
-  (let [board (b/create 2 3)]
-    (is (= [[0 0 0] [0 0 0]] (board :matrix)))))
+  (let [board (b/create 3 2 0)]
+    (is (= 3 (count (board :matrix))))
+    (is (= 2 (count ((board :matrix) 0))))
+    (is (= [[0 0] [0 0] [0 0]] (board :matrix)))))

@@ -2,13 +2,25 @@
 
 (defstruct Board [matrix])
 
-(defn- create-matrix [width height]
+(defn- rand-array [n]
+  (loop [n n
+         acc []]
+    (if (= n 0)
+      acc
+      (recur (dec n) (push acc (php/rand 0 1))))))
+
+(defn- create-matrix [height width & [value]]
   (loop [matrix []
-         n width]
+         n height]
     (if (= n 0)
       matrix
-      (recur (push matrix (values (php/array_fill 0 height 0))) (dec n)))))
+      (let [vec (if (nil? value)
+                  (rand-array width)
+                  (values (php/array_fill 0 width value)))]
+        (recur (push matrix vec) (dec n))))))
 
-(defn create [width height]
-  (let [matrix (create-matrix width height)]
+(defn create [height width & [value]]
+  (let [matrix (create-matrix height width value)]
     (Board matrix)))
+
+

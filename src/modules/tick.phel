@@ -2,18 +2,18 @@
   (:require lifegame\modules\board :as b)
   (:require lifegame\modules\cell :as c))
 
-(defn get-cells [width height]
+(defn- get-cells [height width]
   (for [x :range [height]
         y :range [width]]
     (c/Cell x y)))
 
 (defn next-board [board f]
   (let [matrix (board :matrix)
-        width (count (get matrix 0))
+        width (count (matrix 0))
         height (count matrix)
-        new-matrix (loop [cells (get-cells width height)
+        new-matrix (loop [cells (get-cells height width)
                           cells-results (map |(f $ board) cells)
-                          new-matrix (b/create-matrix width height)]
+                          new-matrix (b/create-matrix height width 0)]
                      (if (empty? cells)
                        new-matrix
                        (let [cell (first cells)

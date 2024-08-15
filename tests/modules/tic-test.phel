@@ -1,18 +1,18 @@
-(ns lifegame\modules\cell-test
+(ns lifegame\modules\tick-test
   (:require lifegame\modules\board :as b)
   (:require lifegame\modules\cell :as c)
   (:require lifegame\modules\tick :as t)
   (:require phel\test :refer [deftest is]))
 
 (deftest test-tick-4
-  # 111
-  # 110
-  # 000
+  # 1110
+  # 1100
+  # 0000
   #
-  # 101
-  # 101
-  # 000
-  (let [board (b/create 3 3)
+  # 1010
+  # 1010
+  # 0000
+  (let [board (b/create 3 4 0)
         board (c/born (c/Cell 0 0) board)
         board (c/born (c/Cell 0 1) board)
         board (c/born (c/Cell 0 2) board)
@@ -20,13 +20,18 @@
         board (c/born (c/Cell 1 0) board)
         board (t/tick board)
         matrix (board :matrix)]
+    (is (= 3 (count matrix)))
+    (is (= 4 (count (matrix 0))))
     (is (= 1 (get-in matrix [0 0])))
     (is (= 0 (get-in matrix [0 1])))
     (is (= 1 (get-in matrix [0 2])))
+    (is (= 0 (get-in matrix [0 3])))
     (is (= 1 (get-in matrix [1 0])))
     (is (= 0 (get-in matrix [1 1])))
     (is (= 1 (get-in matrix [1 2])))
+    (is (= 0 (get-in matrix [1 3])))
     (is (= 0 (get-in matrix [2 0])))
     (is (= 0 (get-in matrix [2 1])))
-    (is (= 0 (get-in matrix [2 2])))))
+    (is (= 0 (get-in matrix [2 2])))
+    (is (= 0 (get-in matrix [2 3])))))
 

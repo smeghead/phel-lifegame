@@ -12,7 +12,8 @@
   "type": "project",
   "require": {
     "php": ">=8.2",
-    "phel-lang/phel-lang": "^0.15"
+    "phel-lang/phel-lang": "^0.15",
+    "chemaclass/phel-cli-gui": "^0.2.0"
   },
   "require-dev": {
     "symfony/var-dumper": "^6.4"

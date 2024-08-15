@@ -1,5 +1,32 @@
-(ns cli-skeleton\main
-  (:require cli-skeleton\modules\adder-module :refer [adder]))
+(ns lifegame\main
+  (:require phel-cli-gui\terminal-gui :as gui)
+  (:require lifegame\modules\board :as b)
+  (:require lifegame\modules\cell :as c)
+  (:require lifegame\modules\tick :as t))
 
-(when-not *build-mode*
-  (println (adder 1 2 3)))
+
+(defn draw-board [board]
+  (let [matrix (board :matrix)
+        a-width (count (matrix 0))
+        a-height (count matrix)]
+    (dofor [x :range [a-height]
+            y :range [a-width]]
+      (gui/render y x (case (get-in matrix [x y])
+                        1 "#"
+                        0 " ")))))
+
+(defn random-board []
+  (let [board (b/create 20 30)
+        board (c/born (c/Cell 0 0) board)
+        board (c/born (c/Cell 0 1) board)
+        board (c/born (c/Cell 0 2) board)
+        board (c/born (c/Cell 1 1) board)
+        board (c/born (c/Cell 1 0) board)]
+    board))
+
+(gui/clear-screen)
+
+(loop [board (random-board)]
+  (php/usleep 10000)
+  (draw-board board)
+  (recur (t/tick board)))
