@@ -8,26 +8,22 @@
 (def *height* 20)
 (def *width* 40)
 
-(defn- get-matrix-data [matrix height width]
-  (loop [x 0
+(defn- get-matrix-data [matrix]
+  (loop [matrix matrix
          acc []]
-    (if (>= x height)
+    (if (empty? matrix)
       (s/join "\n" acc)
       (recur
-        (inc x)
-        (push acc (loop [y 0
-                         acc []]
-                    (if (>= y width)
-                      (s/join "" (map |(case $
-                                         1 "#"
-                                         0 " ") acc))
-                      (recur (inc y) (push acc (get-in matrix [x y]))))))))))
+        (rest matrix)
+        (push acc (s/join "" (map |(case $
+                                     1 "#"
+                                     0 " ") (first matrix))))))))
 
 (defn draw-board [board tick-count]
   (let [matrix (board :matrix)
         width (count (matrix 0))
         height (count matrix)]
-    (gui/render 0 0 (get-matrix-data matrix height width))
+    (gui/render 0 0 (get-matrix-data matrix))
     (gui/render 1 (+ *height* 2) (format "tick: %d" tick-count))))
 
 (defn random-board []
