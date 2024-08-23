@@ -8,15 +8,13 @@
 (def *height* 20)
 (def *width* 40)
 
+(def char-map {1 "#" 0 " "})
+
 (defn- get-matrix-line [line]
-  (reduce
-    |(str $1 (case $2
-               1 "#"
-               0 " "))
-    "" line))
+  (apply str (map char-map line)))
 
 (defn- get-matrix-data [matrix]
-  (s/join "\n" (map |(get-matrix-line $) matrix)))
+  (s/join "\n" (map get-matrix-line matrix)))
 
 (defn draw-board [board tick-count]
   (let [matrix (board :matrix)
@@ -34,6 +32,6 @@
   (gui/clear-screen)
   (loop [board (random-board)
          tick-count 1]
-    (php/usleep 50000)
+    (php/usleep 10000)
     (draw-board board tick-count)
     (recur (t/tick board) (inc tick-count))))
