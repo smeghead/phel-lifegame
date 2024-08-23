@@ -11,17 +11,12 @@
   (let [matrix (board :matrix)
         width (count (matrix 0))
         height (count matrix)
-        new-matrix (loop [cells (get-cells height width)
-                          cells-results (map |(f $ board) cells)
-                          new-matrix (b/create-matrix height width 0)]
-                     (if (empty? cells)
-                       new-matrix
-                       (let [cell (first cells)
-                             v (first cells-results)]
-                         (recur
-                           (rest cells)
-                           (rest cells-results)
-                           (put-in new-matrix [(cell :x) (cell :y)] v)))))]
+        cells (get-cells height width)
+        cell-infos (map |(do [$1 $2]) cells (map |(f $ board) cells))
+        new-matrix (reduce (fn [matrix [cell v]]
+                             (put-in matrix [(cell :x) (cell :y)] v))
+                           (b/create-matrix height width 0)
+                           cell-infos)]
      (b/Board new-matrix)))
 
 (defn tick [board]
