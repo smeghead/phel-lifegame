@@ -28,6 +28,8 @@
 (defn random-board []
   (b/create *height* *width*))
 
+(php/pcntl_signal \SIGINT (fn [] (php/exit)))
+
 (when-not *build-mode*
   (gui/clear-screen)
   (loop [board (random-board)
