@@ -8,16 +8,15 @@
 (def *height* 20)
 (def *width* 40)
 
+(defn- get-matrix-line [line]
+  (reduce
+    |(str $1 (case $2
+               1 "#"
+               0 " "))
+    "" line))
+
 (defn- get-matrix-data [matrix]
-  (loop [matrix matrix
-         acc []]
-    (if (empty? matrix)
-      (s/join "\n" acc)
-      (recur
-        (rest matrix)
-        (push acc (s/join "" (map |(case $
-                                     1 "#"
-                                     0 " ") (first matrix))))))))
+  (s/join "\n" (map |(get-matrix-line $) matrix)))
 
 (defn draw-board [board tick-count]
   (let [matrix (board :matrix)
